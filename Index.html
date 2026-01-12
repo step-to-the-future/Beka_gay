@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Тест по операционным системам</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      padding: 10px;
+      margin: 0;
+    }
+    .quiz-container {
+      max-width: 1000px;
+      margin: auto;
+      background: #fff;
+      padding: 16px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    h1 {
+      text-align: center;
+      font-size: 22px;
+    }
+    .question {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .options label {
+      display: block;
+      margin: 8px 0;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+    .options input {
+      transform: scale(1.2);
+      margin-right: 8px;
+    }
+    button {
+      width: 100%;
+      margin-top: 12px;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background: #4CAF50;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    .result {
+      margin-top: 15px;
+      font-size: 17px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 20px;
+      }
+      .question {
+        font-size: 17px;
+      }
+      .options label {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="quiz-container">
+  <h1>Тест по операционным системам</h1>
+  <div id="quiz"></div>
+  <button onclick="checkAnswer()">Проверить</button>
+  <button onclick="nextQuestion()">Следующий вопрос</button>
+  <div id="result" class="result"></div>
+</div>
+
+<script>
+const questions = [
+  {
+    question: "Что такое операционная система?",
+    options: [
+      "Программа для выполнения вычислений",
+      "Набор программ, управляющих аппаратными средствами и предоставляющих сервисы для выполнения пользовательских программ",
+      "Только программа для работы с файловыми системами",
+      "Среда для разработки приложений"
+    ],
+    answer: 1
+  },
+  {
+    question: "Какой из следующих процессов не является частью работы операционной системы?",
+    options: [
+      "Управление памятью",
+      "Обработка прерываний",
+      "Запуск пользовательских приложений",
+      "Оптимизация пользовательского интерфейса"
+    ],
+    answer: 3
+  },
+  {
+    question: "Что такое системный вызов в операционной системе?",
+    options: [
+      "Специальная программа для работы с устройствами ввода-вывода",
+      "Передача управления пользователю",
+      "Интерфейс между пользовательскими приложениями и ядром ОС",
+      "Механизм обновления системы"
+    ],
+    answer: 2
+  }
+  // ⚠️ Остальные вопросы добавляются по этому же шаблону
+];
+
+let current = 0;
+
+function loadQuestion() {
+  const q = questions[current];
+  const quiz = document.getElementById('quiz');
+  quiz.innerHTML = '';
+
+  const qEl = document.createElement('div');
+  qEl.className = 'question';
+  qEl.textContent = (current + 1) + '. ' + q.question;
+  quiz.appendChild(qEl);
+
+  const optionsDiv = document.createElement('div');
+  optionsDiv.className = 'options';
+
+  q.options.forEach((opt, i) => {
+    const label = document.createElement('label');
+    label.innerHTML = `<input type="radio" name="option" value="${i}"> ${opt}`;
+    optionsDiv.appendChild(label);
+  });
+
+  quiz.appendChild(optionsDiv);
+  document.getElementById('result').textContent = '';
+}
+
+function checkAnswer() {
+  const selected = document.querySelector('input[name="option"]:checked');
+  const result = document.getElementById('result');
+
+  if (!selected) {
+    result.textContent = 'Выберите ответ!';
+    result.style.color = 'red';
+    return;
+  }
+
+  if (parseInt(selected.value) === questions[current].answer) {
+    result.textContent = 'Правильно ✅';
+    result.style.color = 'green';
+  } else {
+    result.textContent = 'Неправильно ❌ Правильный ответ: ' +
+      questions[current].options[questions[current].answer];
+    result.style.color = 'red';
+  }
+}
+
+function nextQuestion() {
+  if (current < questions.length - 1) {
+    current++;
+    loadQuestion();
+  } else {
+    document.getElementById('quiz').innerHTML = '<h2>Тест завершён 🎉</h2>';
+    document.getElementById('result').textContent = '';
+  }
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
