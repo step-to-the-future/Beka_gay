@@ -1236,7 +1236,7 @@ function showQuestion() {
     label.appendChild(input);
     label.append(ans.text);
 
-    input.addEventListener("change", () => {
+    input.addEventListener("click", () => {
       if (Number(input.value) === item.c) {
         label.classList.add("correct");
         circles[currentQuestion].classList.add("correct");
@@ -1276,5 +1276,6 @@ startQuiz();
 
 </body>
 </html>
+
 
 
